@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,7 +11,7 @@ vi.mock('react-dom/client', () => ({
 }));
 
 vi.mock('react-router-dom', async (importOriginal) => {
-    const actual = await importOriginal();
+    const actual = await importOriginal() as Record<string, unknown>;
     return {
         ...actual,
         BrowserRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
@@ -31,7 +31,7 @@ describe('main.tsx', () => {
         document.body.appendChild(rootElement);
 
         const mockRender = vi.fn();
-        (createRoot as unknown as vi.Mock).mockReturnValue({ render: mockRender });
+        (createRoot as unknown as Mock).mockReturnValue({ render: mockRender });
 
         // Dynamically import the main file after setting up the mocks
         await import('./main');
@@ -39,7 +39,7 @@ describe('main.tsx', () => {
         expect(createRoot).toHaveBeenCalledWith(rootElement);
         expect(mockRender).toHaveBeenCalledWith(
             <StrictMode>
-                <BrowserRouter>
+                <BrowserRouter basename={import.meta.env.VITE_BASE_URL}>
                     <App />
                 </BrowserRouter>
             </StrictMode>

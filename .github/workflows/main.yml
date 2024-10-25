@@ -20,6 +20,12 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# Environment variables
+env:
+  VITE_APP_TITLE: ${{ github.env.VITE_APP_TITLE }}
+  VITE_API_URL: ${{ github.env.VITE_API_URL }}
+  VITE_BASE_URL: ${{ github.env.VITE_BASE_URL }}
+
 jobs:
   # Single deploy job since we're just deploying
   deploy:

@@ -19,7 +19,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.VITE_BASE_URL}>
       <App />
     </BrowserRouter>
   </StrictMode>,

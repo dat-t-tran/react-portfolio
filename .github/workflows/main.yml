@@ -6,6 +6,9 @@ on:
   push:
     branches: ["main"]
 
+  pull_request:
+    types: [opened, synchronize, reopened]
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -42,6 +45,12 @@ jobs:
           echo "VITE_APP_TITLE=$VITE_APP_TITLE"
           echo "VITE_API_URL=$VITE_API_URL"
           echo "VITE_BASE_URL=$VITE_BASE_URL"
+      - name: Test and coverage
+        run: npm run test:coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
       - name: Build
         run: npm run build:dev
         env:

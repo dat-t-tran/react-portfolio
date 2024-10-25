@@ -45,9 +45,9 @@ jobs:
       - name: Build
         run: npm run build:dev
         env:
-          VITE_APP_TITLE: "$VITE_APP_TITLE"
-          VITE_API_URL: "$VITE_API_URL"
-          VITE_BASE_URL: "$VITE_BASE_URL"
+          VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

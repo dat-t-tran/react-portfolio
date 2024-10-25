@@ -1,15 +1,16 @@
 {
   "name": "react-portfolio",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "author": {
     "name": "Dat Tran",
     "email": "dat.t.tran@outlook.com"
   },
+  "homepage": "https://dat-t-tran.github.io/react-portfolio/",
   "scripts": {
     "dev": "vite --mode development",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "build:dev": "vite build --mode development",
     "build:prod": "vite build --mode production",
     "lint": "eslint .",

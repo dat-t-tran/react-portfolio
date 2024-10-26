@@ -11,8 +11,8 @@
   "scripts": {
     "dev": "vite --mode development",
     "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "build:prod": "vite build --mode production",
+    "build:development": "vite build --mode development",
+    "build:production": "vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",

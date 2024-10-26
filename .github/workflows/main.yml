@@ -27,7 +27,7 @@ jobs:
   # Single deploy job since we're just deploying
   deploy:
     environment:
-      name: development
+      name: ${{ vars.NODE_ENV }}
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
@@ -50,9 +50,9 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          SONAR_TOKEN: ${{ secrets.SONARCLOUD_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Build
-        run: npm run build:dev
+        run: npm run build:$NODE_ENV
         env:
           VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
           VITE_API_URL: ${{ vars.VITE_API_URL }}

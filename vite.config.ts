@@ -9,7 +9,7 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     coverage: {
-      reporter: ["text", "json", "html"],
+      reporter: ["text", "json", "html", "lcov"],
       enabled: true,
       exclude: [
         ...configDefaults.exclude,

@@ -4,10 +4,7 @@ name: Deploy static content to Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main", "develop"]
-
-  pull_request:
-    types: [opened, synchronize, reopened]
+    branches: ["develop"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -27,7 +24,7 @@ jobs:
   # Single deploy job since we're just deploying
   deploy:
     environment:
-      name: ${{ vars.NODE_ENV }}
+      name: development
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
@@ -47,23 +44,6 @@ jobs:
           echo "VITE_BASE_URL: $VITE_BASE_URL"
           echo "NODE_ENV: $NODE_ENV"
           echo "SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}"
-      - name: Prepare Environment Variables for Deployment
-        id: prepare-env
-        run: |
-          # Convert repository or organization variables to JSON format
-          echo '${{ toJSON(vars) }}' > env_vars.json
-          # Convert JSON to .env format
-          cat env_vars.json | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
-          #remove no longer needed env_vars.json file
-          rm -f env_vars.json
-          # Display the contents of the .env file (for debugging purposes)
-          cat .env
-      # Build and push the Docker image, passing the .env_file
-      - name: Build and Push Container
-        run: |-
-          docker build \
-            -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}" ./
-          docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}"
       - name: Test and coverage
         run: npm run test:coverage
       - name: SonarCloud Scan
@@ -71,7 +51,11 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Build
-        run: npm run build:$NODE_ENV
+        run: npm run build:development
+        env:
+          VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

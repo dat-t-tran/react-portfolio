@@ -5,6 +5,8 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["develop"]
+  pull_request:
+    branches: ["develop"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -30,6 +32,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -37,19 +41,27 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Use variables
-        run: |
-          echo "VITE_APP_TITLE: $VITE_APP_TITLE"
-          echo "VITE_API_URL: $VITE_API_URL"
-          echo "VITE_BASE_URL: $VITE_BASE_URL"
-          echo "NODE_ENV: $NODE_ENV"
-          echo "SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}"
       - name: Test and coverage
         run: npm run test:coverage
-      - name: SonarCloud Scan
+      - name: Analyze with SonarCloud
         uses: SonarSource/sonarcloud-github-action@master
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+        with:
+          # Additional arguments for the SonarScanner CLI
+          args:
+            # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
+            # mandatory
+            -Dsonar.projectKey=dat-t-tran_react-portfolio
+            -Dsonar.organization=dat-t-tran
+            # Comma-separated paths to directories containing main source files.
+            #-Dsonar.sources= # optional, default is project base directory
+            # Comma-separated paths to directories containing test source files.
+            #-Dsonar.tests= # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
+            # Adds more detail to both client and server-side analysis logs, activating DEBUG mode for the scanner, and adding client-side environment variables and system properties to the server-side log of analysis report processing.
+            #-Dsonar.verbose= # optional, default is false
+          # When you need the analysis to take place in a directory other than the one from which it was launched, default is .
+          projectBaseDir: .
       - name: Build
         run: npm run build:development
         env:
@@ -57,7 +69,7 @@ jobs:
           VITE_API_URL: ${{ vars.VITE_API_URL }}
           VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

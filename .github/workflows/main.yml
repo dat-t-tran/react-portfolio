@@ -46,16 +46,30 @@ jobs:
           echo "VITE_API_URL: $VITE_API_URL"
           echo "VITE_BASE_URL: $VITE_BASE_URL"
           echo "NODE_ENV: $NODE_ENV"
-          echo "SONAR_TOKEN: $SONAR_TOKEN"
-        env:
-          VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
-          VITE_API_URL: ${{ vars.VITE_API_URL }}
-          VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          echo "SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}"
+      - name: Prepare Environment Variables for Deployment
+        id: prepare-env
+        run: |
+          # Convert repository or organization variables to JSON format
+          echo '${{ toJSON(vars) }}' > env_vars.json
+          # Convert JSON to .env format
+          cat env_vars.json | jq -r 'to_entries | map("\(.key)=\(.value)") | .[]' > .env
+          #remove no longer needed env_vars.json file
+          rm -f env_vars.json
+          # Display the contents of the .env file (for debugging purposes)
+          cat .env
+      # Build and push the Docker image, passing the .env_file
+      - name: Build and Push Container
+        run: |-
+          docker build \
+            -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}" ./
+          docker push "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}"
       - name: Test and coverage
         run: npm run test:coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Build
         run: npm run build:$NODE_ENV
       - name: Setup Pages

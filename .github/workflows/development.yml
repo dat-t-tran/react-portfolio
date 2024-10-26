@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -39,19 +41,10 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Use variables
-        run: |
-          echo "VITE_APP_TITLE: $VITE_APP_TITLE"
-          echo "VITE_API_URL: $VITE_API_URL"
-          echo "VITE_BASE_URL: $VITE_BASE_URL"
-          echo "NODE_ENV: $NODE_ENV"
-          echo "SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}"
       - name: Test and coverage
         run: npm run test:coverage
       - name: Analyze with SonarCloud
-        # You can pin the exact commit or the version.
-        # uses: SonarSource/sonarcloud-github-action@v2.2.0
-        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:

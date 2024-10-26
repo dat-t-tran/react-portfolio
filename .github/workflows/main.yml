@@ -22,7 +22,8 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: true
-
+env:
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 jobs:
   # Single deploy job since we're just deploying
   deploy:
@@ -42,17 +43,15 @@ jobs:
         run: npm ci
       - name: Use variables
         run: |
-          echo "VITE_APP_TITLE=$VITE_APP_TITLE"
-          echo "VITE_API_URL=$VITE_API_URL"
-          echo "VITE_BASE_URL=$VITE_BASE_URL"
+          echo "VITE_APP_TITLE=${{ vars.VITE_APP_TITLE }}"
+          echo "VITE_API_URL=${{ vars.VITE_API_URL }}"
+          echo "VITE_BASE_URL=${{ vars.VITE_BASE_URL }}"
       - name: Test and coverage
         run: npm run test:coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Build
-        run: npm run build:$NODE_ENV
+        run: npm run build:${{ vars.NODE_ENV }}
         env:
           VITE_APP_TITLE: ${{ vars.VITE_APP_TITLE }}
           VITE_API_URL: ${{ vars.VITE_API_URL }}

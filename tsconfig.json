@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["@testing-library/jest-dom"]
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
   "include": ["./vitest.setup.ts"],
   "exclude": ["node_modules", "**/*.test.ts", "**/*.test.tsx"],

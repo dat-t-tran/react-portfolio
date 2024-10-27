@@ -1,18 +1,12 @@
 import React from 'react'
-import HeroSection from '../../components/HeroSection/HeroSection';
-// import SpecialitySection from '../components/SpecialitySection';
-import DoctorsSection from '../../components/DoctorsSection';
-// import CallToAction from '../components/CallToAction';
+import HeroSection from '../../components/HeroSection';
+import ExpertiseSection from '../../components/ExpertiseSection';
 
 const Home: React.FC = () => {
     return (
         <>
             <HeroSection />
-            <DoctorsSection />
-            {/* 
-            <SpecialitySection />
-            
-            <CallToAction /> */}
+            <ExpertiseSection />
         </>
     )
 }

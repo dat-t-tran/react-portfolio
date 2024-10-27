@@ -10,8 +10,8 @@ vi.mock('react-dom/client', () => ({
     createRoot: vi.fn(),
 }));
 
-vi.mock('react-router-dom', async (importOriginal) => {
-    const actual = await importOriginal() as Record<string, unknown>;
+vi.mock('react-router-dom', async () => {
+    const actual = await import('react-router-dom');
     return {
         ...actual,
         BrowserRouter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,

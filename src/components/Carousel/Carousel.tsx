@@ -1,52 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { assets } from '../../assets/assets.config';
-import { MD_SCREEN_SIZE, NUMBER_OF_SLIDES } from '../../constants/common';
-import ExpertiseCard from '../ExpertiseCard';
-import CarouselControl from './CarouselControl';
-import Button from '../Button';
-import { CarouselProps } from './Carousel.types';
+import React, { useState, useEffect } from "react";
+import { assets } from "../../assets/assets.config";
+import {
+  MD_SCREEN_SIZE,
+  NUMBER_PER_SLIDE,
+  XL_SCREEN_SIZE,
+} from "../../constants";
+import Card from "../Card";
+import CarouselControl from "./CarouselControl";
+import Button from "../Button";
+import { CarouselProps } from "./Carousel.types";
 
-const Carousel: React.FC<CarouselProps> = ({ items }) => {
+const Carousel: React.FC<CarouselProps> = ({
+  items,
+  numPerSlide = NUMBER_PER_SLIDE,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [visibleItems, setVisibleItems] = useState(NUMBER_OF_SLIDES);
+  const [isMobile, setIsMobile] = useState(true);
+  const [visibleItems, setVisibleItems] = useState(numPerSlide);
+  const [slidesToShow, setSlidesToShow] = useState(numPerSlide);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= MD_SCREEN_SIZE);
+      setSlidesToShow(
+        window.innerWidth > MD_SCREEN_SIZE && window.innerWidth < XL_SCREEN_SIZE
+          ? numPerSlide - 1
+          : numPerSlide
+      );
     };
 
+    window.addEventListener("resize", handleResize);
+
     handleResize();
-    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === items.length - NUMBER_OF_SLIDES ? 0 : prevIndex + 1
+      prevIndex === items.length - numPerSlide ? 0 : prevIndex + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? items.length - NUMBER_OF_SLIDES : prevIndex - 1
+      prevIndex === 0 ? items.length - numPerSlide : prevIndex - 1
     );
   };
 
   const handleSeeMore = () => {
-    setVisibleItems((prevVisibleItems) => prevVisibleItems + 3);
+    setVisibleItems((prevVisibleItems) => prevVisibleItems + numPerSlide);
   };
 
   return (
-    <div className="py-6 md:py-10 md:overflow-hidden">
+    <div className="w-full py-6 md:py-10 md:overflow-hidden">
       {isMobile ? (
         <>
           {items.slice(0, visibleItems).map((item, index) => (
-            <div className="w-full mb-4" key={index}>
-              <ExpertiseCard
+            <div className="w-full md:max-w-[26.5rem] mb-4" key={index}>
+              <Card
                 customClass={item.customClass}
                 header={item.header}
                 body={item.body}
@@ -69,17 +83,17 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
       ) : (
         <>
           <div
-            className="flex gap-6 transition-transform ease-out duration-500"
+            className="flex transition-transform ease-out duration-500 -mx-6"
             style={{
-              transform: `translateX(-${(currentIndex / NUMBER_OF_SLIDES) * 100}%)`,
+              transform: `translateX(-${(currentIndex / slidesToShow) * 100}%)`,
             }}
           >
             {items.map((item, index) => (
               <div
-                className={`w-1/${NUMBER_OF_SLIDES} flex-shrink-0`}
+                className={`w-1/${slidesToShow} flex-shrink-0 px-6 py-12`}
                 key={index}
               >
-                <ExpertiseCard
+                <Card
                   customClass={item.customClass}
                   header={item.header}
                   body={item.body}
@@ -91,8 +105,9 @@ const Carousel: React.FC<CarouselProps> = ({ items }) => {
           <CarouselControl
             prevSlide={prevSlide}
             nextSlide={nextSlide}
-            currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
+            currentIndex={currentIndex}
+            slidesToShow={slidesToShow}
             items={items}
           />
         </>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Heading from '../Heading';
-import { expertiesData } from '../../constants/expertiseData';
+import { expertiesData } from '../../constants';
 import Carousel from '../Carousel/Carousel';
 
 const ExpertiseSection: React.FC = (): JSX.Element => {

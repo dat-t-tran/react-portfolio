@@ -37,6 +37,13 @@ import bootsing from './components/expertise-section/boosting-your-immune-system
 import bootsingLg from './components/expertise-section/boosting-your-immune-system2500x1666.jpeg';
 import tipsForManage from './components/expertise-section/tips-for-managing-chronic-illness980x654.png';
 import tipsForManageLg from './components/expertise-section/tips-for-managing-chronic-illness2500x1668.jpeg';
+import originAboutUs from './components/about-us-section/about-us-banner-4096x2731.jpeg';
+import webpAboutUs from './components/about-us-section/about-us-banner-600x400.webp';
+import webpAboutUsLg from './components/about-us-section/about-us-banner-4096x2731.webp';
+import david from './components/testimonials-section/david-panjaitan-383x412.png';
+import davidLg from './components/testimonials-section/david-panjaitan-2500x1666.png';
+import ester from './components/testimonials-section/ester-howard-318x368.png';
+import esterLg from './components/testimonials-section/ester-howard-2500x1666.png';
 
 export const assets = {
   global: {
@@ -83,5 +90,16 @@ export const assets = {
     bootsingLg,
     tipsForManage,
     tipsForManageLg,
+  },
+  aboutUs: {
+    originAboutUs,
+    webpAboutUs,
+    webpAboutUsLg,
+  },
+  testimonials: {
+    david,
+    davidLg,
+    ester,
+    esterLg,
   },
 };

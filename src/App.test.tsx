@@ -1,11 +1,11 @@
-import { render } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import '@testing-library/jest-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
+import { render } from "@testing-library/react";
+// import { describe, it, expect } from "vitest";
+import "@testing-library/jest-dom";
+import { BrowserRouter as Router } from "react-router-dom";
+import App from "./App";
 
-describe('App component', () => {
-  it('should render without crashing', () => {
+describe("App component", () => {
+  it("should render without crashing", () => {
     const { container } = render(
       <Router>
         <App />
@@ -14,7 +14,7 @@ describe('App component', () => {
     expect(container).toBeInTheDocument();
   });
 
-  it('should render the Router component', () => {
+  it("should render the Router component", () => {
     const { getByText } = render(
       <Router>
         <App />

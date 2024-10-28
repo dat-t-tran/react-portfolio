@@ -1,11 +1,11 @@
 import React from 'react';
 import { assets } from '../../assets/assets.config';
-import { NUMBER_OF_SLIDES } from '../../constants/common';
 import { CarouselControlProps } from './CarouselControl.types';
 import Button from '../Button';
 
 const CarouselControl: React.FC<CarouselControlProps> = ({
   currentIndex,
+  slidesToShow,
   prevSlide,
   nextSlide,
   setCurrentIndex,
@@ -30,7 +30,7 @@ const CarouselControl: React.FC<CarouselControlProps> = ({
       {/* Indicators */}
       <div className="flex justify-center space-x-2">
         {Array.from({
-          length: Math.ceil(items.length / NUMBER_OF_SLIDES),
+          length: Math.ceil(items.length / slidesToShow),
         }).map((_, index) => (
           <Button
             id={'indicator' + index}
@@ -50,12 +50,12 @@ const CarouselControl: React.FC<CarouselControlProps> = ({
         id="next"
         type="button"
         image={
-          currentIndex === items.length - NUMBER_OF_SLIDES
+          currentIndex === items.length - slidesToShow
             ? assets.global.arrowCircleRightInactive
             : assets.global.arrowCircleRight
         }
         onClick={nextSlide}
-        disabled={currentIndex === items.length - NUMBER_OF_SLIDES}
+        disabled={currentIndex === items.length - slidesToShow}
       />
     </div>
   );

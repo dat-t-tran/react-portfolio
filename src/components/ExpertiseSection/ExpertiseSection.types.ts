@@ -1,4 +1,4 @@
-import { CardProps } from '../ExpertiseCard/ExpertiseCard.types';
+import { CardProps } from '../Card/Card.types';
 
 export interface CardList extends CardProps {
   id: number;

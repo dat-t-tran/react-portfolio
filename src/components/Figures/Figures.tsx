@@ -1,18 +1,19 @@
-import React, { useMemo } from 'react';
-import { classNames } from '../../utils/classNames';
-import { FiguresProps } from './Figures.types';
+import React, { useMemo } from "react";
+import { classNames } from "../../utils/classNames";
+import { FiguresProps } from "./Figures.types";
 
 const Figures: React.FC<FiguresProps> = React.memo(
   ({
     gap,
     description,
     children,
-    customClass = '',
-    direction = '',
+    rounded = true,
+    customClass = "",
+    direction = "",
   }): JSX.Element => {
     const containerClassNames = useMemo(() => {
       return classNames(
-        'inline-flex py-2 px-4 sm:p-4 items-center rounded-[0.625rem] sm:rounded-[1.25rem] border border-[#ECF4FD] bg-white absolute',
+        `${rounded ? "rounded-[0.625rem] sm:rounded-[1.25rem] border border-[#ECF4FD]" : ""} inline-flex items-center bg-white`,
         gap,
         direction,
         customClass

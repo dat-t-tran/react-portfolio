@@ -29,7 +29,7 @@ const Header: React.FC = React.memo((): JSX.Element => {
             MedEase
           </span>
         </div>
-        <ul className="hidden md:flex md:items-center md:gap-6 lg:gap-12">
+        <ul className="hidden md:flex md:items-center md:gap-6 xl:gap-12">
           <NavigationList />
         </ul>
         <button

@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { LayoutProps } from './Layout.types'
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children }): JSX.Element => {
     return (
         <div className="px-4 lg:px-[3.75rem] lg:mx-auto">
             <Header />

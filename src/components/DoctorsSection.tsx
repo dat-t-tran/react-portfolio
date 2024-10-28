@@ -1,5 +1,5 @@
 import React from 'react';
-import Title from './Title';
+import Heading from './Heading';
 // import DoctorCard from './DoctorCard';
 // import { doctors } from '../styles/assets';
 
@@ -24,9 +24,9 @@ const DoctorsSection: React.FC = () => {
             <button className="px-16 py-5 mt-16 max-w-full text-xl text-gray-600 whitespace-nowrap bg-indigo-50 rounded-[50px] w-[214px] max-md:px-5 max-md:mt-10">
                 more
             </button> */}
-            <Title seeAll={true} customClass='font-medium text-[2rem] xl:text-6xl leading-[3rem]  xl:leading-[6.75rem] -tracking-[0.04rem] xl:-tracking-[0.075rem] flex items-center justify-between' onClick={() => { }}>
+            <Heading seeAll={true} customClass='font-medium text-[2rem] xl:text-6xl leading-[3rem]  xl:leading-[6.75rem] -tracking-[0.04rem] xl:-tracking-[0.075rem] flex items-center justify-between' onClick={() => { }}>
                 <span>Choose Doctor's <em className='text-primary'>Expertise</em></span>
-            </Title>
+            </Heading>
             <div className='my-10'>
                 <div></div>
             </div>
